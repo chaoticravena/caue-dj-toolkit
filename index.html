@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cauê DJ Toolkit</title>
   
-  <!-- Favicon Estilizado -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237c5cfc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M3 18v-6a9 9 0 0 1 18 0v6'/><path d='M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z'/><path d='M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z'/></svg>">
 
   <script src="config.js"></script>
@@ -28,87 +27,30 @@
 
     body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; overflow-x: hidden; }
 
-    /* ── Header Estilizado ── */
-    header { 
-      padding: 4rem 1.5rem 2rem; 
-      text-align: center;
-      position: relative;
-    }
-
-    .brand-container {
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .headphone-icon {
-      width: 48px;
-      height: 48px;
-      margin-bottom: -10px;
-      filter: drop-shadow(0 0 8px var(--accent));
-      animation: pulse-icon 3s ease-in-out infinite;
-    }
-
-    header h1 { 
-      font-family: 'Rajdhani', sans-serif;
-      font-size: clamp(2.5rem, 8vw, 4rem); 
-      font-weight: 700; 
-      text-transform: uppercase;
-      letter-spacing: -1px;
-      line-height: 0.9;
-      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: shine 5s linear infinite;
-    }
-
-    header h1 span {
-      display: block;
-      font-weight: 300;
-      font-size: 0.35em;
-      letter-spacing: 10px;
-      -webkit-text-fill-color: var(--muted);
-      margin-top: 8px;
-      opacity: 0.8;
-    }
-
-    @keyframes shine {
-      to { background-position: 200% center; }
-    }
-
-    @keyframes pulse-icon {
-      0%, 100% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.1); opacity: 1; }
-    }
-
+    header { padding: 4rem 1.5rem 2rem; text-align: center; position: relative; }
+    .brand-container { display: inline-flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .headphone-icon { width: 48px; height: 48px; margin-bottom: -10px; filter: drop-shadow(0 0 8px var(--accent)); animation: pulse-icon 3s ease-in-out infinite; }
+    header h1 { font-family: 'Rajdhani', sans-serif; font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 700; text-transform: uppercase; letter-spacing: -1px; line-height: 0.9; background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent)); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 5s linear infinite; }
+    header h1 span { display: block; font-weight: 300; font-size: 0.35em; letter-spacing: 10px; -webkit-text-fill-color: var(--muted); margin-top: 8px; opacity: 0.8; }
+    @keyframes shine { to { background-position: 200% center; } }
+    @keyframes pulse-icon { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
     header p { margin-top: 1.5rem; color: var(--muted); font-size: 0.9rem; max-width: 500px; margin-left: auto; margin-right: auto; }
 
-    /* ── Controls ── */
     .controls { max-width: 1200px; margin: 2rem auto 0; padding: 0 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
     .search-wrap { position: relative; }
     .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
     #search { width: 100%; padding: .85rem 1rem .85rem 2.8rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 1rem; outline: none; transition: all .2s; }
     #search:focus { border-color: var(--accent); background: var(--surface2); box-shadow: 0 0 0 4px rgba(124, 92, 252, 0.1); }
-    
     .filters { display: flex; flex-wrap: wrap; gap: .5rem; }
     .filter-btn { padding: .5rem 1.2rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: .85rem; cursor: pointer; transition: all .2s; white-space: nowrap; font-family: 'Rajdhani', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
     .filter-btn:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
     .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(124, 92, 252, 0.3); }
 
-    /* ── Stats bar ── */
     .stats-bar { max-width: 1200px; margin: 1.5rem auto 0; padding: 0 1.5rem; color: var(--muted); font-size: .85rem; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; text-transform: uppercase; }
-
-    /* ── Grid ── */
     .grid { max-width: 1200px; margin: 1rem auto 6rem; padding: 0 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
 
-    /* ── Card ── */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; cursor: pointer; transition: all .3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
-    .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); transform: translateX(-100%); transition: transform 0.5s; }
-    .card:hover::before { transform: translateX(100%); }
     .card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
-    
     .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
     .card-name { font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
     .card-stars { display: flex; align-items: center; gap: .3rem; font-size: .85rem; color: #f5c542; font-weight: 600; }
@@ -118,10 +60,9 @@
     .lang-label { display: flex; align-items: center; gap: .5rem; font-size: .8rem; color: var(--muted); font-weight: 500; }
     .lang-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* ── Modal ── */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 1.5rem; }
     .modal-overlay.open { display: flex; }
-    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; max-width: 600px; width: 100%; padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; max-width: 600px; width: 100%; padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; position: relative; max-height: 90vh; overflow-y: auto; }
     .modal-close { position: absolute; top: 1.25rem; right: 1.25rem; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
     .modal-close:hover { color: var(--text); border-color: var(--accent); transform: rotate(90deg); }
     .modal-name { font-family: 'Rajdhani', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--text); }
@@ -129,11 +70,44 @@
     .btn-primary { padding: 1rem; background: var(--accent); color: #fff; border-radius: var(--radius); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-family: 'Rajdhani', sans-serif; transition: all 0.3s; text-align: center; text-decoration: none; }
     .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124, 92, 252, 0.4); }
 
-    /* ── AI Styles ── */
+    /* ── AI Floating Button ── */
     #ai-btn { position: fixed; bottom: 2rem; right: 2rem; width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; color: #fff; font-size: 1.8rem; cursor: pointer; box-shadow: 0 8px 24px rgba(124,92,252,0.4); z-index: 500; display: flex; align-items: center; justify-content: center; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     #ai-btn:hover { transform: scale(1.1) rotate(5deg); }
+    #ai-btn .ai-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; background: #22c55e; border-radius: 50%; border: 2px solid var(--bg); font-size: .6rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
-    /* ── Language colors ── */
+    /* ── AI Panel ── */
+    #ai-panel { position: fixed; bottom: 0; right: 0; width: min(420px, 100vw); height: min(600px, 90vh); background: var(--surface); border: 1px solid var(--border); border-radius: 24px 24px 0 0; z-index: 600; display: flex; flex-direction: column; transform: translateY(110%); transition: transform 0.3s cubic-bezier(.4,0,.2,1); box-shadow: 0 -8px 40px rgba(0,0,0,0.5); overflow: hidden; }
+    #ai-panel.open { transform: translateY(0); }
+    .ai-header { display: flex; align-items: center; gap: .75rem; padding: 1.25rem; background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .ai-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .ai-header-text { flex: 1; }
+    .ai-header-text strong { display: block; font-size: .95rem; font-family: 'Rajdhani'; letter-spacing: 0.5px; }
+    .ai-header-text span { font-size: .7rem; color: #22c55e; }
+    .ai-header-actions { display: flex; gap: .5rem; }
+    .ai-icon-btn { background: none; border: none; color: var(--muted); cursor: pointer; padding: .3rem; border-radius: 6px; font-size: 1.1rem; transition: color .15s; }
+    .ai-icon-btn:hover { color: var(--text); }
+    .ai-messages { flex: 1; overflow-y: auto; padding: 1.25rem; display: flex; flex-direction: column; gap: 1rem; }
+    .ai-msg { max-width: 88%; font-size: .875rem; line-height: 1.55; }
+    .ai-msg.assistant { align-self: flex-start; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px 12px 12px 12px; padding: .75rem 1rem; color: var(--text); }
+    .ai-msg.user { align-self: flex-end; background: var(--accent); border-radius: 12px 4px 12px 12px; padding: .75rem 1rem; color: #fff; }
+    .ai-msg.loading { align-self: flex-start; color: var(--muted); font-style: italic; }
+    .ai-input-row { display: flex; gap: .5rem; padding: 1rem; border-top: 1px solid var(--border); background: var(--surface); }
+    #ai-input { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: .75rem 1rem; color: var(--text); font-size: .875rem; outline: none; resize: none; max-height: 100px; font-family: inherit; }
+    #ai-input:focus { border-color: var(--accent); }
+    #ai-send { background: var(--accent); border: none; border-radius: 12px; padding: .75rem 1rem; color: #fff; cursor: pointer; transition: opacity .15s; }
+    #ai-send:disabled { opacity: 0.4; }
+
+    /* ── API Key Modal ── */
+    #key-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; align-items: center; justify-content: center; padding: 1.5rem; }
+    #key-overlay.open { display: flex; }
+    .key-modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; max-width: 460px; width: 100%; padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .key-modal h2 { font-family: 'Rajdhani'; font-size: 1.5rem; }
+    .key-modal input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; color: var(--text); outline: none; }
+    .key-modal input:focus { border-color: var(--accent); }
+    .key-modal-actions { display: flex; gap: 1rem; }
+    .btn-ghost { flex: 1; padding: 1rem; background: none; border: 1px solid var(--border); border-radius: 12px; color: var(--muted); cursor: pointer; }
+
+    /* Language colors */
     .lang-Python    { background: #3572A5; }
     .lang-JavaScript{ background: #f1e05a; }
     .lang-TypeScript{ background: #3178c6; }
@@ -141,29 +115,17 @@
     .lang-Cpp       { background: #f34b7d; }
     .lang-Go        { background: #00ADD8; }
     .lang-Rust      { background: #dea584; }
-    .lang-Kotlin    { background: #A97BFF; }
-    .lang-Dart      { background: #00B4AB; }
-    .lang-Java      { background: #b07219; }
-    .lang-MATLAB    { background: #e16737; }
-    .lang-CSharp    { background: #178600; }
-    .lang-Lua       { background: #000080; }
-    .lang-Max       { background: #ff6000; }
-    .lang-Shell     { background: #89e051; }
-    .lang-Vue       { background: #41b883; }
-    .lang-Ruby      { background: #701516; }
     .lang-default   { background: var(--border); }
 
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
   </style>
 </head>
 <body>
 
 <header>
   <div class="brand-container">
-    <!-- Ícone de Headphone Estilizado SVG -->
     <svg class="headphone-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M3 18V12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12V18" stroke="url(#icon-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M21 19C21 20.1046 20.1046 21 19 21H18C16.8954 21 16 20.1046 16 19V16C16 14.8954 16.8954 14 18 14H21V19Z" fill="url(#icon-grad)"/>
@@ -193,34 +155,35 @@
 <div class="stats-bar" id="stats"></div>
 <div class="grid" id="grid"></div>
 
-<!-- Card Modal -->
+<!-- Modal -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal" id="modal">
-    <button class="modal-close" id="modal-close" aria-label="Fechar">✕</button>
+    <button class="modal-close" id="modal-close">✕</button>
     <div class="modal-name" id="modal-name"></div>
-    <div class="modal-category" id="modal-category" style="font-family:'Rajdhani'; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:1px; font-size:0.9rem;"></div>
+    <div id="modal-category" style="font-family:'Rajdhani'; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:1px; font-size:0.9rem;"></div>
     <p class="modal-desc" id="modal-desc"></p>
-    <div class="modal-meta" id="modal-meta" style="display:flex; gap:0.5rem; flex-wrap:wrap;"></div>
-    <div class="modal-box" id="modal-tip" style="display:none; background:var(--surface2); padding:1.25rem; border-radius:12px; border-left:4px solid var(--accent);"></div>
-    <div class="modal-box" id="modal-start" style="display:none; background:var(--surface2); padding:1.25rem; border-radius:12px; border-left:4px solid var(--accent2);"></div>
+    <div id="modal-meta" style="display:flex; gap:0.5rem; flex-wrap:wrap;"></div>
+    <div id="modal-tip" style="display:none; background:var(--surface2); padding:1.25rem; border-radius:12px; border-left:4px solid var(--accent);"></div>
+    <div id="modal-start" style="display:none; background:var(--surface2); padding:1.25rem; border-radius:12px; border-left:4px solid var(--accent2);"></div>
     <div class="modal-actions">
-      <a id="modal-link" class="btn-primary" target="_blank" rel="noopener">Abrir Repositório no GitHub</a>
+      <a id="modal-link" class="btn-primary" target="_blank" rel="noopener">Abrir no GitHub</a>
     </div>
   </div>
 </div>
 
-<!-- AI: floating button -->
-<button id="ai-btn" title="Pergunte ao assistente de IA">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+<!-- AI Button -->
+<button id="ai-btn">
+  🤖
+  <span class="ai-badge">✦</span>
 </button>
 
-<!-- AI: chat panel -->
-<div id="ai-panel" style="border-radius: 24px 24px 0 0; overflow: hidden;">
-  <div class="ai-header" style="background: var(--surface2);">
+<!-- AI Panel -->
+<div id="ai-panel">
+  <div class="ai-header">
     <div class="ai-avatar">🎧</div>
     <div class="ai-header-text">
-      <strong style="font-family:'Rajdhani'; letter-spacing:0.5px;">Assistente DJ</strong>
-      <span style="font-size:0.7rem;">● Inteligência Artificial Ativa</span>
+      <strong>Assistente DJ</strong>
+      <span>● online · free via OpenRouter</span>
     </div>
     <div class="ai-header-actions">
       <button class="ai-icon-btn" id="ai-key-btn">🔑</button>
@@ -230,26 +193,26 @@
   </div>
   <div class="ai-messages" id="ai-messages"></div>
   <div class="ai-input-row">
-    <textarea id="ai-input" placeholder="Como posso ajudar no seu set?" rows="1"></textarea>
-    <button id="ai-send" style="border-radius: 12px;">➤</button>
+    <textarea id="ai-input" placeholder="Pergunte sobre ferramentas..." rows="1"></textarea>
+    <button id="ai-send">➤</button>
   </div>
 </div>
 
-<!-- API Key modal -->
+<!-- Key Modal -->
 <div id="key-overlay">
   <div class="key-modal">
-    <h2 style="font-family:'Rajdhani';">🔑 Conectar OpenRouter</h2>
-    <p>Insira sua chave para ativar o assistente inteligente.</p>
+    <h2>🔑 Conectar OpenRouter</h2>
+    <p>Insira sua chave API para ativar o assistente.</p>
     <input id="key-input" type="password" placeholder="sk-or-v1-..." />
     <div class="key-modal-actions">
-      <button class="btn-ghost" id="key-cancel">Voltar</button>
-      <button class="btn-primary" id="key-save" style="flex:1">Ativar</button>
+      <button class="btn-ghost" id="key-cancel">Cancelar</button>
+      <button class="btn-primary" id="key-save">Salvar</button>
     </div>
   </div>
 </div>
 
 <script>
-  // Lógica original do site (preservada e otimizada)
+  // Data Logic
   const CATEGORIES = ["🎵 Beat & BPM", "🎛️ Mixing & Effects", "🎙️ Stems & Separation", "🎹 MIDI & Instruments", "📱 Streaming & Playlists", "🤖 AI Music", "🔧 Utilities"];
   const TIPS = {
     "🎵 Beat & BPM": "aubio é a base de muitos projetos. Combine com python-audio-effects para sincronizar luzes.",
@@ -275,11 +238,15 @@
     const list = repos.filter(r => (activeCategory === "Todas" || r.category === activeCategory) && (!query || r.name.toLowerCase().includes(query.toLowerCase())));
     document.getElementById("stats").textContent = `${list.length} Ferramentas Disponíveis`;
     grid.innerHTML = list.length ? list.map((r,i) => `
-      <div class="card" onclick="openModal(${JSON.stringify(r).replace(/"/g, '&quot;')})">
+      <div class="card" data-idx="${i}">
         <div class="card-top"><span class="card-name">${r.name}</span><span class="card-stars">★ ${r.stars}</span></div>
         <p class="card-desc">${r.description||"Sem descrição."}</p>
         <div class="card-footer"><span class="badge">${r.category}</span><span class="lang-label"><span class="lang-dot ${LANG_CLASS[r.language]||'lang-default'}"></span>${r.language||'N/A'}</span></div>
       </div>`).join("") : `<div class="empty"><span>🔍</span>Nenhum resultado encontrado.</div>`;
+    
+    grid.querySelectorAll(".card").forEach(card => {
+      card.addEventListener("click", () => openModal(list[card.dataset.idx]));
+    });
   }
 
   function openModal(r) {
@@ -287,6 +254,17 @@
     document.getElementById("modal-category").textContent = r.category;
     document.getElementById("modal-desc").textContent = r.description;
     document.getElementById("modal-link").href = r.url;
+    
+    const tip = document.getElementById("modal-tip");
+    const tipText = TIPS[r.category];
+    tip.style.display = tipText ? "block" : "none";
+    if(tipText) tip.innerHTML = `<strong>💡 Dica:</strong> ${tipText}`;
+
+    const start = document.getElementById("modal-start");
+    const startText = r.comocomecar || r.comoczecar;
+    start.style.display = startText ? "block" : "none";
+    if(startText) start.innerHTML = `<strong>🚀 Começar:</strong> ${startText}`;
+
     document.getElementById("modal-overlay").classList.add("open");
     document.body.style.overflow = "hidden";
   }
@@ -295,14 +273,80 @@
   document.getElementById("modal-close").addEventListener("click", closeModal);
   document.getElementById("search").addEventListener("input", e => { query = e.target.value; renderGrid(); });
 
+  // AI Logic
+  const LS_KEY = "cauedj_openrouter_key";
+  let chatHistory = [];
+
+  function openAI() {
+    if(!localStorage.getItem(LS_KEY)) { document.getElementById("key-overlay").classList.add("open"); return; }
+    document.getElementById("ai-panel").classList.add("open");
+    if(chatHistory.length === 0) appendMsg("assistant", "Olá! Sou o assistente do Cauê DJ Toolkit. Como posso te ajudar hoje?");
+  }
+
+  function appendMsg(role, text) {
+    const wrap = document.getElementById("ai-messages");
+    const div = document.createElement("div");
+    div.className = `ai-msg ${role}`;
+    div.innerHTML = text.replace(/\n/g, "<br>");
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+  }
+
+  async function sendAI() {
+    const inp = document.getElementById("ai-input");
+    const text = inp.value.trim();
+    if(!text) return;
+    
+    appendMsg("user", text);
+    chatHistory.push({role: "user", content: text});
+    inp.value = "";
+    
+    const loading = document.createElement("div");
+    loading.className = "ai-msg loading";
+    loading.textContent = "Pensando...";
+    document.getElementById("ai-messages").appendChild(loading);
+
+    try {
+      const resp = await fetch(OPENROUTER_CONFIG.endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem(LS_KEY)}`
+        },
+        body: JSON.stringify({
+          model: OPENROUTER_CONFIG.model,
+          messages: [{role: "system", content: "Você é um assistente especializado em ferramentas para DJs. Responda em português."}, ...chatHistory]
+        })
+      });
+      loading.remove();
+      const data = await resp.json();
+      const reply = data.choices[0].message.content;
+      appendMsg("assistant", reply);
+      chatHistory.push({role: "assistant", content: reply});
+    } catch(e) {
+      loading.remove();
+      appendMsg("assistant", "Erro ao conectar. Verifique sua chave API.");
+    }
+  }
+
+  document.getElementById("ai-btn").addEventListener("click", openAI);
+  document.getElementById("ai-close-btn").addEventListener("click", () => document.getElementById("ai-panel").classList.remove("open"));
+  document.getElementById("ai-send").addEventListener("click", sendAI);
+  document.getElementById("ai-key-btn").addEventListener("click", () => document.getElementById("key-overlay").classList.add("open"));
+  document.getElementById("key-save").addEventListener("click", () => {
+    localStorage.setItem(LS_KEY, document.getElementById("key-input").value);
+    document.getElementById("key-overlay").classList.remove("open");
+    openAI();
+  });
+  document.getElementById("key-cancel").addEventListener("click", () => document.getElementById("key-overlay").classList.remove("open"));
+
   // Boot
   fetch("data/repos.json").then(r => r.json()).then(data => { repos = data; renderFilters(); renderGrid(); });
 </script>
 
-<!-- Script de Animações Dinâmicas -->
+<!-- Animations -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script>
-  // Fundo Generativo
   const initBg = () => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -328,13 +372,7 @@
     window.addEventListener('resize', res); res();
     pts = Array.from({length:60}, () => new Pt()); loop();
   };
-
-  // Inicialização
-  document.addEventListener('DOMContentLoaded', () => {
-    initBg();
-    gsap.from("header", { opacity: 0, y: -30, duration: 1, ease: "power3.out" });
-    gsap.from(".controls", { opacity: 0, y: 20, duration: 1, delay: 0.3, ease: "power3.out" });
-  });
+  document.addEventListener('DOMContentLoaded', initBg);
 </script>
 
 </body>
