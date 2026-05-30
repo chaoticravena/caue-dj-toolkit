@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cauê DJ Toolkit</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e12;
+      --surface: #17171f;
+      --surface2: #1f1f2b;
+      --border: #2a2a38;
+      --accent: #7c5cfc;
+      --accent2: #c084fc;
+      --text: #e8e8f0;
+      --muted: #8888a8;
+      --radius: 12px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #12121a 0%, #1a1028 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 1.5rem 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      margin-top: .5rem;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    /* ── Controls ── */
+    .controls {
+      max-width: 1200px;
+      margin: 1.5rem auto 0;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+    #search {
+      width: 100%;
+      padding: .75rem 1rem .75rem 2.6rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    #search:focus { border-color: var(--accent); }
+    #search::placeholder { color: var(--muted); }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
+    .filter-btn {
+      padding: .45rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: .85rem;
+      cursor: pointer;
+      transition: all .18s;
+      white-space: nowrap;
+    }
+
+    .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      max-width: 1200px;
+      margin: 1rem auto 0;
+      padding: 0 1.5rem;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    /* ── Grid ── */
+    .grid {
+      max-width: 1200px;
+      margin: 1rem auto 4rem;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+      cursor: pointer;
+      transition: border-color .2s, transform .15s, box-shadow .2s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124, 92, 252, .15);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: .5rem;
+    }
+
+    .card-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .card-stars {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: .82rem;
+      color: #f5c542;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .card-desc {
+      font-size: .875rem;
+      color: var(--muted);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .badge {
+      font-size: .75rem;
+      padding: .25rem .65rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--surface2);
+    }
+
+    .lang-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .lang-label {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.7);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      max-width: 560px;
+      width: 100%;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: .25rem;
+    }
+
+    .modal-close:hover { color: var(--text); }
+
+    .modal-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      padding-right: 2rem;
+    }
+
+    .modal-category { font-size: .9rem; }
+
+    .modal-desc {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .modal-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: .75rem;
+      margin-top: .5rem;
+    }
+
+    .btn-primary {
+      flex: 1;
+      padding: .7rem 1rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: opacity .15s;
+    }
+
+    .btn-primary:hover { opacity: .85; }
+
+    .modal-tip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .9rem 1rem;
+    }
+
+    .modal-tip h4 {
+      font-size: .8rem;
+      color: var(--accent2);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: .4rem;
+    }
+
+    .modal-tip p {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── Empty state ── */
+    .empty {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--muted);
+    }
+
+    .empty span { font-size: 3rem; display: block; margin-bottom: 1rem; }
+
+    /* ── Language colors (common) ── */
+    .lang-Python    { background: #3572A5; }
+    .lang-JavaScript{ background: #f1e05a; }
+    .lang-TypeScript{ background: #3178c6; }
+    .lang-C         { background: #555555; }
+    .lang-Cpp       { background: #f34b7d; }
+    .lang-Go        { background: #00ADD8; }
+    .lang-Rust      { background: #dea584; }
+    .lang-Kotlin    { background: #A97BFF; }
+    .lang-Java      { background: #b07219; }
+    .lang-MATLAB    { background: #e16737; }
+    .lang-CSharp    { background: #178600; }
+    .lang-Lua       { background: #000080; }
+    .lang-Max       { background: #ff6000; }
+    .lang-Shell     { background: #89e051; }
+    .lang-Vue       { background: #41b883; }
+    .lang-default   { background: var(--border); }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🎧 Cauê DJ Toolkit</h1>
+  <p>Ferramentas open source para DJs — organizadas por caso de uso</p>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input id="search" type="search" placeholder="Buscar ferramenta..." autocomplete="off" />
+  </div>
+  <div class="filters" id="filters"></div>
+</div>
+
+<div class="stats-bar" id="stats"></div>
+<div class="grid" id="grid"></div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modal-close" aria-label="Fechar">✕</button>
+    <div class="modal-name" id="modal-name"></div>
+    <div class="modal-category" id="modal-category"></div>
+    <p class="modal-desc" id="modal-desc"></p>
+    <div class="modal-meta" id="modal-meta"></div>
+    <div class="modal-tip" id="modal-tip"></div>
+    <div class="modal-actions">
+      <a id="modal-link" class="btn-primary" target="_blank" rel="noopener">Ver no GitHub →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const CATEGORIES = [
+    "🎵 Beat & BPM",
+    "🎛️ Mixing & Effects",
+    "🎙️ Stems & Separation",
+    "🎹 MIDI & Instruments",
+    "📱 Streaming & Playlists",
+    "🤖 AI Music",
+    "🔧 Utilities",
+  ];
+
+  const TIPS = {
+    "🎵 Beat & BPM": "Use junto com uma ferramenta de mixing para sincronizar tracks automaticamente. aubio é a base de muitos outros projetos nessa categoria.",
+    "🎛️ Mixing & Effects": "pylive e LiveOSC2 são ótimos para controlar o Ableton por scripts. Combine com basic-pitch para criar transições inteligentes.",
+    "🎙️ Stems & Separation": "python-audio-separator suporta vários modelos (Demucs, MDX). Use UVR5-UI se preferir interface gráfica em vez de linha de comando.",
+    "🎹 MIDI & Instruments": "basic-pitch converte áudio em MIDI com alta precisão. Combine com isobar para gerar padrões generativos a partir de samples.",
+    "📱 Streaming & Playlists": "rekordbox-spotify-downloader automatiza o download e análise de BPM de playlists do Spotify direto para o Rekordbox.",
+    "🤖 AI Music": "polymath transforma qualquer música em sample-library pronta para produção. Combine com python-audio-separator para separar os stems antes.",
+    "🔧 Utilities": "DawDreamer permite rodar plugins VST direto do Python, ideal para automação de processos no seu DAW.",
+  };
+
+  const LANG_CLASS = {
+    "Python": "lang-Python",
+    "JavaScript": "lang-JavaScript",
+    "TypeScript": "lang-TypeScript",
+    "C": "lang-C",
+    "C++": "lang-Cpp",
+    "Go": "lang-Go",
+    "Rust": "lang-Rust",
+    "Kotlin": "lang-Kotlin",
+    "Java": "lang-Java",
+    "MATLAB": "lang-MATLAB",
+    "C#": "lang-CSharp",
+    "Lua": "lang-Lua",
+    "Max": "lang-Max",
+    "Shell": "lang-Shell",
+    "Vue": "lang-Vue",
+  };
+
+  let repos = [];
+  let activeCategory = "Todas";
+  let query = "";
+
+  function langClass(lang) {
+    return LANG_CLASS[lang] || "lang-default";
+  }
+
+  function fmtStars(n) {
+    return n >= 1000 ? (n / 1000).toFixed(1) + "k" : String(n);
+  }
+
+  function renderFilters() {
+    const wrap = document.getElementById("filters");
+    const all = ["Todas", ...CATEGORIES];
+    wrap.innerHTML = all.map(cat => `
+      <button class="filter-btn${cat === activeCategory ? " active" : ""}" data-cat="${cat}">
+        ${cat}
+      </button>
+    `).join("");
+    wrap.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        activeCategory = btn.dataset.cat;
+        renderFilters();
+        renderGrid();
+      });
+    });
+  }
+
+  function filtered() {
+    return repos.filter(r => {
+      const matchCat = activeCategory === "Todas" || r.category === activeCategory;
+      const q = query.toLowerCase();
+      const matchQ = !q
+        || r.name.toLowerCase().includes(q)
+        || (r.description || "").toLowerCase().includes(q)
+        || (r.language || "").toLowerCase().includes(q)
+        || r.category.toLowerCase().includes(q);
+      return matchCat && matchQ;
+    });
+  }
+
+  function renderGrid() {
+    const grid = document.getElementById("grid");
+    const stats = document.getElementById("stats");
+    const list = filtered();
+    stats.textContent = `${list.length} ferramenta${list.length !== 1 ? "s" : ""} encontrada${list.length !== 1 ? "s" : ""}`;
+
+    if (!list.length) {
+      grid.innerHTML = `<div class="empty"><span>🔍</span>Nenhuma ferramenta encontrada. Tente outro filtro ou busca.</div>`;
+      return;
+    }
+
+    grid.innerHTML = list.map((r, i) => `
+      <div class="card" data-idx="${i}" tabindex="0" role="button" aria-label="${r.name}">
+        <div class="card-top">
+          <span class="card-name">${r.name}</span>
+          <span class="card-stars">★ ${fmtStars(r.stars)}</span>
+        </div>
+        <p class="card-desc">${r.description || "Sem descrição."}</p>
+        <div class="card-footer">
+          <span class="badge">${r.category}</span>
+          ${r.language ? `
+            <span class="lang-label">
+              <span class="lang-dot ${langClass(r.language)}"></span>
+              ${r.language}
+            </span>` : ""}
+        </div>
+      </div>
+    `).join("");
+
+    grid.querySelectorAll(".card").forEach(card => {
+      const open = () => openModal(filtered()[+card.dataset.idx]);
+      card.addEventListener("click", open);
+      card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") open(); });
+    });
+  }
+
+  function openModal(r) {
+    document.getElementById("modal-name").textContent = r.name;
+    document.getElementById("modal-category").textContent = r.category;
+    document.getElementById("modal-desc").textContent = r.description || "Sem descrição disponível.";
+    document.getElementById("modal-link").href = r.url;
+
+    const meta = document.getElementById("modal-meta");
+    meta.innerHTML = [
+      `<span class="badge">★ ${fmtStars(r.stars)} estrelas</span>`,
+      r.language ? `<span class="badge">${r.language}</span>` : "",
+      `<span class="badge">${r.category}</span>`,
+    ].join("");
+
+    const tip = document.getElementById("modal-tip");
+    const tipText = TIPS[r.category] || "";
+    tip.innerHTML = tipText
+      ? `<h4>💡 Dica de uso</h4><p>${tipText}</p>`
+      : "";
+    tip.style.display = tipText ? "" : "none";
+
+    document.getElementById("modal-overlay").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    document.getElementById("modal-overlay").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  document.getElementById("modal-close").addEventListener("click", closeModal);
+  document.getElementById("modal-overlay").addEventListener("click", e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+  document.getElementById("search").addEventListener("input", e => {
+    query = e.target.value;
+    renderGrid();
+  });
+
+  fetch("data/repos.json")
+    .then(r => r.json())
+    .then(data => {
+      repos = data;
+      renderFilters();
+      renderGrid();
+    })
+    .catch(() => {
+      document.getElementById("grid").innerHTML =
+        `<div class="empty"><span>⚠️</span>Erro ao carregar repositórios.</div>`;
+    });
+</script>
+</body>
+</html>
