@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cauê DJ Toolkit</title>
+  <script src="config.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -19,325 +20,66 @@
       --radius: 12px;
     }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      min-height: 100vh;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
 
     /* ── Header ── */
-    header {
-      background: linear-gradient(135deg, #12121a 0%, #1a1028 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 2rem 1.5rem 1.5rem;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 700;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: -0.5px;
-    }
-
-    header p {
-      margin-top: .5rem;
-      color: var(--muted);
-      font-size: .95rem;
-    }
+    header { background: linear-gradient(135deg, #12121a 0%, #1a1028 100%); border-bottom: 1px solid var(--border); padding: 2rem 1.5rem 1.5rem; text-align: center; }
+    header h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700; background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.5px; }
+    header p { margin-top: .5rem; color: var(--muted); font-size: .95rem; }
 
     /* ── Controls ── */
-    .controls {
-      max-width: 1200px;
-      margin: 1.5rem auto 0;
-      padding: 0 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .search-wrap {
-      position: relative;
-    }
-
-    .search-wrap svg {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      pointer-events: none;
-    }
-
-    #search {
-      width: 100%;
-      padding: .75rem 1rem .75rem 2.6rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      color: var(--text);
-      font-size: 1rem;
-      outline: none;
-      transition: border-color .2s;
-    }
-
+    .controls { max-width: 1200px; margin: 1.5rem auto 0; padding: 0 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .search-wrap { position: relative; }
+    .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+    #search { width: 100%; padding: .75rem 1rem .75rem 2.6rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 1rem; outline: none; transition: border-color .2s; }
     #search:focus { border-color: var(--accent); }
     #search::placeholder { color: var(--muted); }
-
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .5rem;
-    }
-
-    .filter-btn {
-      padding: .45rem 1rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--muted);
-      font-size: .85rem;
-      cursor: pointer;
-      transition: all .18s;
-      white-space: nowrap;
-    }
-
+    .filters { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .filter-btn { padding: .45rem 1rem; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: .85rem; cursor: pointer; transition: all .18s; white-space: nowrap; }
     .filter-btn:hover { border-color: var(--accent); color: var(--text); }
-
-    .filter-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-    }
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
     /* ── Stats bar ── */
-    .stats-bar {
-      max-width: 1200px;
-      margin: 1rem auto 0;
-      padding: 0 1.5rem;
-      color: var(--muted);
-      font-size: .85rem;
-    }
+    .stats-bar { max-width: 1200px; margin: 1rem auto 0; padding: 0 1.5rem; color: var(--muted); font-size: .85rem; }
 
     /* ── Grid ── */
-    .grid {
-      max-width: 1200px;
-      margin: 1rem auto 4rem;
-      padding: 0 1.5rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1rem;
-    }
+    .grid { max-width: 1200px; margin: 1rem auto 6rem; padding: 0 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
 
     /* ── Card ── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: .75rem;
-      cursor: pointer;
-      transition: border-color .2s, transform .15s, box-shadow .2s;
-    }
-
-    .card:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(124, 92, 252, .15);
-    }
-
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: .5rem;
-    }
-
-    .card-name {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text);
-      word-break: break-word;
-    }
-
-    .card-stars {
-      display: flex;
-      align-items: center;
-      gap: .3rem;
-      font-size: .82rem;
-      color: #f5c542;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .card-desc {
-      font-size: .875rem;
-      color: var(--muted);
-      line-height: 1.5;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: auto;
-    }
-
-    .badge {
-      font-size: .75rem;
-      padding: .25rem .65rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      background: var(--surface2);
-    }
-
-    .lang-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-      flex-shrink: 0;
-    }
-
-    .lang-label {
-      display: flex;
-      align-items: center;
-      gap: .4rem;
-      font-size: .78rem;
-      color: var(--muted);
-    }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; display: flex; flex-direction: column; gap: .75rem; cursor: pointer; transition: border-color .2s, transform .15s, box-shadow .2s; }
+    .card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,92,252,.15); }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; }
+    .card-name { font-size: 1rem; font-weight: 600; color: var(--text); word-break: break-word; }
+    .card-stars { display: flex; align-items: center; gap: .3rem; font-size: .82rem; color: #f5c542; white-space: nowrap; flex-shrink: 0; }
+    .card-desc { font-size: .875rem; color: var(--muted); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+    .badge { font-size: .75rem; padding: .25rem .65rem; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); background: var(--surface2); }
+    .lang-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .lang-label { display: flex; align-items: center; gap: .4rem; font-size: .78rem; color: var(--muted); }
 
     /* ── Modal ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.7);
-      backdrop-filter: blur(4px);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-    }
-
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
     .modal-overlay.open { display: flex; }
-
-    .modal {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      max-width: 560px;
-      width: 100%;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      position: relative;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 1.4rem;
-      cursor: pointer;
-      line-height: 1;
-      padding: .25rem;
-    }
-
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; max-width: 560px; width: 100%; padding: 2rem; display: flex; flex-direction: column; gap: 1rem; position: relative; max-height: 90vh; overflow-y: auto; }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--muted); font-size: 1.4rem; cursor: pointer; line-height: 1; padding: .25rem; }
     .modal-close:hover { color: var(--text); }
-
-    .modal-name {
-      font-size: 1.3rem;
-      font-weight: 700;
-      padding-right: 2rem;
-    }
-
+    .modal-name { font-size: 1.3rem; font-weight: 700; padding-right: 2rem; }
     .modal-category { font-size: .9rem; }
-
-    .modal-desc {
-      font-size: .9rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .modal-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: .5rem;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: .75rem;
-      margin-top: .5rem;
-    }
-
-    .btn-primary {
-      flex: 1;
-      padding: .7rem 1rem;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: var(--radius);
-      font-size: .9rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      text-align: center;
-      transition: opacity .15s;
-    }
-
+    .modal-desc { font-size: .9rem; color: var(--muted); line-height: 1.6; }
+    .modal-meta { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .modal-actions { display: flex; gap: .75rem; margin-top: .5rem; }
+    .btn-primary { flex: 1; padding: .7rem 1rem; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-size: .9rem; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; transition: opacity .15s; }
     .btn-primary:hover { opacity: .85; }
-
-    .modal-tip {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: .9rem 1rem;
-    }
-
-    .modal-tip h4 {
-      font-size: .8rem;
-      color: var(--accent2);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      margin-bottom: .4rem;
-    }
-
-    .modal-tip p {
-      font-size: .85rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
+    .modal-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: .9rem 1rem; }
+    .modal-box h4 { font-size: .8rem; color: var(--accent2); text-transform: uppercase; letter-spacing: .08em; margin-bottom: .4rem; }
+    .modal-box p { font-size: .85rem; color: var(--muted); line-height: 1.5; }
+    .modal-box code { background: var(--bg); padding: .1rem .35rem; border-radius: 4px; font-size: .82rem; color: #a8d8a8; font-family: 'Consolas', monospace; }
 
     /* ── Empty state ── */
-    .empty {
-      grid-column: 1/-1;
-      text-align: center;
-      padding: 4rem 1rem;
-      color: var(--muted);
-    }
-
+    .empty { grid-column: 1/-1; text-align: center; padding: 4rem 1rem; color: var(--muted); }
     .empty span { font-size: 3rem; display: block; margin-bottom: 1rem; }
 
-    /* ── Language colors (common) ── */
+    /* ── Language colors ── */
     .lang-Python    { background: #3572A5; }
     .lang-JavaScript{ background: #f1e05a; }
     .lang-TypeScript{ background: #3178c6; }
@@ -346,6 +88,7 @@
     .lang-Go        { background: #00ADD8; }
     .lang-Rust      { background: #dea584; }
     .lang-Kotlin    { background: #A97BFF; }
+    .lang-Dart      { background: #00B4AB; }
     .lang-Java      { background: #b07219; }
     .lang-MATLAB    { background: #e16737; }
     .lang-CSharp    { background: #178600; }
@@ -353,7 +96,53 @@
     .lang-Max       { background: #ff6000; }
     .lang-Shell     { background: #89e051; }
     .lang-Vue       { background: #41b883; }
+    .lang-Ruby      { background: #701516; }
     .lang-default   { background: var(--border); }
+
+    /* ── AI Chat button ── */
+    #ai-btn { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; color: #fff; font-size: 1.4rem; cursor: pointer; box-shadow: 0 4px 20px rgba(124,92,252,.5); z-index: 200; transition: transform .2s, box-shadow .2s; display: flex; align-items: center; justify-content: center; }
+    #ai-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(124,92,252,.7); }
+    #ai-btn .ai-badge { position: absolute; top: -4px; right: -4px; width: 18px; height: 18px; background: #22c55e; border-radius: 50%; border: 2px solid var(--bg); font-size: .55rem; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+    /* ── AI Panel ── */
+    #ai-panel { position: fixed; bottom: 0; right: 0; width: min(420px, 100vw); height: min(600px, 90vh); background: var(--surface); border: 1px solid var(--border); border-radius: 16px 16px 0 0; z-index: 300; display: flex; flex-direction: column; transform: translateY(110%); transition: transform .3s cubic-bezier(.4,0,.2,1); box-shadow: 0 -8px 40px rgba(0,0,0,.5); }
+    #ai-panel.open { transform: translateY(0); }
+    .ai-header { display: flex; align-items: center; gap: .75rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .ai-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .ai-header-text { flex: 1; }
+    .ai-header-text strong { display: block; font-size: .95rem; }
+    .ai-header-text span { font-size: .78rem; color: #22c55e; }
+    .ai-header-actions { display: flex; gap: .5rem; }
+    .ai-icon-btn { background: none; border: none; color: var(--muted); cursor: pointer; padding: .3rem; border-radius: 6px; font-size: 1rem; transition: color .15s; }
+    .ai-icon-btn:hover { color: var(--text); }
+    .ai-messages { flex: 1; overflow-y: auto; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: .75rem; }
+    .ai-msg { max-width: 88%; font-size: .875rem; line-height: 1.55; }
+    .ai-msg.assistant { align-self: flex-start; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px 12px 12px 12px; padding: .65rem .9rem; color: var(--text); }
+    .ai-msg.user { align-self: flex-end; background: var(--accent); border-radius: 12px 4px 12px 12px; padding: .65rem .9rem; color: #fff; }
+    .ai-msg.loading { align-self: flex-start; color: var(--muted); font-style: italic; }
+    .ai-msg code { background: rgba(255,255,255,.08); padding: .1rem .3rem; border-radius: 4px; font-family: 'Consolas', monospace; font-size: .8rem; }
+    .ai-input-row { display: flex; gap: .5rem; padding: .75rem 1rem; border-top: 1px solid var(--border); flex-shrink: 0; }
+    #ai-input { flex: 1; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: .6rem .9rem; color: var(--text); font-size: .875rem; outline: none; resize: none; max-height: 100px; transition: border-color .2s; font-family: inherit; }
+    #ai-input:focus { border-color: var(--accent); }
+    #ai-input::placeholder { color: var(--muted); }
+    #ai-send { background: var(--accent); border: none; border-radius: 8px; padding: .6rem .9rem; color: #fff; cursor: pointer; transition: opacity .15s; font-size: 1rem; flex-shrink: 0; }
+    #ai-send:hover { opacity: .85; }
+    #ai-send:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ── API Key modal ── */
+    #key-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75); backdrop-filter: blur(4px); z-index: 400; align-items: center; justify-content: center; padding: 1rem; }
+    #key-overlay.open { display: flex; }
+    .key-modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; max-width: 460px; width: 100%; padding: 2rem; display: flex; flex-direction: column; gap: 1.25rem; }
+    .key-modal h2 { font-size: 1.2rem; }
+    .key-modal p { font-size: .875rem; color: var(--muted); line-height: 1.6; }
+    .key-modal a { color: var(--accent2); }
+    .key-modal input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: .7rem 1rem; color: var(--text); font-size: .9rem; outline: none; transition: border-color .2s; }
+    .key-modal input:focus { border-color: var(--accent); }
+    .key-modal input::placeholder { color: var(--muted); }
+    .key-modal-actions { display: flex; gap: .75rem; }
+    .btn-ghost { flex: 1; padding: .65rem; background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); cursor: pointer; font-size: .875rem; transition: border-color .15s; }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--text); }
+    .key-error { font-size: .82rem; color: #f87171; display: none; }
 
     /* scrollbar */
     ::-webkit-scrollbar { width: 6px; }
@@ -381,7 +170,7 @@
 <div class="stats-bar" id="stats"></div>
 <div class="grid" id="grid"></div>
 
-<!-- Modal -->
+<!-- Card Modal -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal" id="modal">
     <button class="modal-close" id="modal-close" aria-label="Fechar">✕</button>
@@ -389,14 +178,64 @@
     <div class="modal-category" id="modal-category"></div>
     <p class="modal-desc" id="modal-desc"></p>
     <div class="modal-meta" id="modal-meta"></div>
-    <div class="modal-tip" id="modal-tip"></div>
+    <div class="modal-box" id="modal-tip" style="display:none"></div>
+    <div class="modal-box" id="modal-start" style="display:none"></div>
     <div class="modal-actions">
       <a id="modal-link" class="btn-primary" target="_blank" rel="noopener">Ver no GitHub →</a>
     </div>
   </div>
 </div>
 
+<!-- AI: floating button -->
+<button id="ai-btn" title="Pergunte ao assistente de IA">
+  🤖
+  <span class="ai-badge">✦</span>
+</button>
+
+<!-- AI: chat panel -->
+<div id="ai-panel">
+  <div class="ai-header">
+    <div class="ai-avatar">🎧</div>
+    <div class="ai-header-text">
+      <strong>Assistente DJ</strong>
+      <span>● online · free via OpenRouter</span>
+    </div>
+    <div class="ai-header-actions">
+      <button class="ai-icon-btn" id="ai-key-btn" title="Configurar chave API">🔑</button>
+      <button class="ai-icon-btn" id="ai-clear-btn" title="Limpar conversa">🗑</button>
+      <button class="ai-icon-btn" id="ai-close-btn" title="Fechar">✕</button>
+    </div>
+  </div>
+  <div class="ai-messages" id="ai-messages"></div>
+  <div class="ai-input-row">
+    <textarea id="ai-input" placeholder="Pergunte sobre ferramentas, combinações, como começar…" rows="1"></textarea>
+    <button id="ai-send">➤</button>
+  </div>
+</div>
+
+<!-- API Key modal -->
+<div id="key-overlay">
+  <div class="key-modal">
+    <h2>🔑 Conectar OpenRouter</h2>
+    <p>
+      O assistente usa o modelo <strong>Llama 3 8B</strong> via OpenRouter — gratuito, sem custo.<br><br>
+      1. Crie sua conta em <a href="https://openrouter.ai" target="_blank">openrouter.ai</a><br>
+      2. Vá em <strong>Keys</strong> e gere uma chave gratuita<br>
+      3. Cole abaixo — fica salva só no seu navegador
+    </p>
+    <input id="key-input" type="password" placeholder="sk-or-v1-..." autocomplete="off" />
+    <span class="key-error" id="key-error">Chave inválida. Verifique e tente novamente.</span>
+    <div class="key-modal-actions">
+      <button class="btn-ghost" id="key-cancel">Cancelar</button>
+      <button class="btn-primary" id="key-save" style="flex:1">Salvar e conectar</button>
+    </div>
+  </div>
+</div>
+
 <script>
+  /* ─────────────────────────────────────────
+     DATA & FILTER
+  ───────────────────────────────────────── */
   const CATEGORIES = [
     "🎵 Beat & BPM",
     "🎛️ Mixing & Effects",
@@ -408,59 +247,35 @@
   ];
 
   const TIPS = {
-    "🎵 Beat & BPM": "Use junto com uma ferramenta de mixing para sincronizar tracks automaticamente. aubio é a base de muitos outros projetos nessa categoria.",
-    "🎛️ Mixing & Effects": "pylive e LiveOSC2 são ótimos para controlar o Ableton por scripts. Combine com basic-pitch para criar transições inteligentes.",
-    "🎙️ Stems & Separation": "python-audio-separator suporta vários modelos (Demucs, MDX). Use UVR5-UI se preferir interface gráfica em vez de linha de comando.",
-    "🎹 MIDI & Instruments": "basic-pitch converte áudio em MIDI com alta precisão. Combine com isobar para gerar padrões generativos a partir de samples.",
-    "📱 Streaming & Playlists": "rekordbox-spotify-downloader automatiza o download e análise de BPM de playlists do Spotify direto para o Rekordbox.",
-    "🤖 AI Music": "polymath transforma qualquer música em sample-library pronta para produção. Combine com python-audio-separator para separar os stems antes.",
-    "🔧 Utilities": "DawDreamer permite rodar plugins VST direto do Python, ideal para automação de processos no seu DAW.",
+    "🎵 Beat & BPM": "aubio é a base de muitos projetos de detecção de BPM. Combine com python-audio-effects ou LedFx para sincronizar luzes e efeitos com o ritmo.",
+    "🎛️ Mixing & Effects": "pylive e LiveOSC2 controlam o Ableton por scripts. Combine com MixingBear para automixar faixas e basic-pitch para criar transições inteligentes.",
+    "🎙️ Stems & Separation": "python-audio-separator suporta vários modelos (Demucs, MDX). Use UVR5-UI se preferir interface gráfica. Combine com pylive para separar stems direto de um set.",
+    "🎹 MIDI & Instruments": "basic-pitch converte áudio em MIDI com alta precisão. Combine com isobar para gerar padrões generativos ou sardine para live coding em tempo real.",
+    "📱 Streaming & Playlists": "rekordbox-spotify-downloader automatiza download e análise de BPM de playlists do Spotify direto para o Rekordbox. SPlayer gerencia bibliotecas locais com visualização de espectro.",
+    "🤖 AI Music": "polymath transforma qualquer música em sample-library pronta para produção. Combine com python-audio-separator para separar os stems antes de processar com IA.",
+    "🔧 Utilities": "DawDreamer permite rodar plugins VST direto do Python. Combine com friture para análise visual em tempo real e AbletonParsing para ler warp markers automaticamente.",
   };
 
   const LANG_CLASS = {
-    "Python": "lang-Python",
-    "JavaScript": "lang-JavaScript",
-    "TypeScript": "lang-TypeScript",
-    "C": "lang-C",
-    "C++": "lang-Cpp",
-    "Go": "lang-Go",
-    "Rust": "lang-Rust",
-    "Kotlin": "lang-Kotlin",
-    "Java": "lang-Java",
-    "MATLAB": "lang-MATLAB",
-    "C#": "lang-CSharp",
-    "Lua": "lang-Lua",
-    "Max": "lang-Max",
-    "Shell": "lang-Shell",
-    "Vue": "lang-Vue",
+    Python:"lang-Python", JavaScript:"lang-JavaScript", TypeScript:"lang-TypeScript",
+    C:"lang-C", "C++":"lang-Cpp", Go:"lang-Go", Rust:"lang-Rust",
+    Kotlin:"lang-Kotlin", Dart:"lang-Dart", Java:"lang-Java",
+    MATLAB:"lang-MATLAB", "C#":"lang-CSharp", Lua:"lang-Lua",
+    Max:"lang-Max", Shell:"lang-Shell", Vue:"lang-Vue", Ruby:"lang-Ruby",
   };
 
-  let repos = [];
-  let activeCategory = "Todas";
-  let query = "";
+  let repos = [], activeCategory = "Todas", query = "";
 
-  function langClass(lang) {
-    return LANG_CLASS[lang] || "lang-default";
-  }
-
-  function fmtStars(n) {
-    return n >= 1000 ? (n / 1000).toFixed(1) + "k" : String(n);
-  }
+  function langClass(l) { return LANG_CLASS[l] || "lang-default"; }
+  function fmtStars(n) { return n >= 1000 ? (n/1000).toFixed(1)+"k" : String(n); }
 
   function renderFilters() {
     const wrap = document.getElementById("filters");
-    const all = ["Todas", ...CATEGORIES];
-    wrap.innerHTML = all.map(cat => `
-      <button class="filter-btn${cat === activeCategory ? " active" : ""}" data-cat="${cat}">
-        ${cat}
-      </button>
-    `).join("");
+    wrap.innerHTML = ["Todas", ...CATEGORIES].map(cat =>
+      `<button class="filter-btn${cat===activeCategory?" active":""}" data-cat="${cat}">${cat}</button>`
+    ).join("");
     wrap.querySelectorAll(".filter-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        activeCategory = btn.dataset.cat;
-        renderFilters();
-        renderGrid();
-      });
+      btn.addEventListener("click", () => { activeCategory = btn.dataset.cat; renderFilters(); renderGrid(); });
     });
   }
 
@@ -468,12 +283,10 @@
     return repos.filter(r => {
       const matchCat = activeCategory === "Todas" || r.category === activeCategory;
       const q = query.toLowerCase();
-      const matchQ = !q
-        || r.name.toLowerCase().includes(q)
-        || (r.description || "").toLowerCase().includes(q)
-        || (r.language || "").toLowerCase().includes(q)
-        || r.category.toLowerCase().includes(q);
-      return matchCat && matchQ;
+      return matchCat && (!q || r.name.toLowerCase().includes(q)
+        || (r.description||"").toLowerCase().includes(q)
+        || (r.language||"").toLowerCase().includes(q)
+        || r.category.toLowerCase().includes(q));
     });
   }
 
@@ -481,58 +294,51 @@
     const grid = document.getElementById("grid");
     const stats = document.getElementById("stats");
     const list = filtered();
-    stats.textContent = `${list.length} ferramenta${list.length !== 1 ? "s" : ""} encontrada${list.length !== 1 ? "s" : ""}`;
-
+    stats.textContent = `${list.length} ferramenta${list.length!==1?"s":""} encontrada${list.length!==1?"s":""}`;
     if (!list.length) {
       grid.innerHTML = `<div class="empty"><span>🔍</span>Nenhuma ferramenta encontrada. Tente outro filtro ou busca.</div>`;
       return;
     }
-
-    grid.innerHTML = list.map((r, i) => `
+    grid.innerHTML = list.map((r,i) => `
       <div class="card" data-idx="${i}" tabindex="0" role="button" aria-label="${r.name}">
         <div class="card-top">
           <span class="card-name">${r.name}</span>
           <span class="card-stars">★ ${fmtStars(r.stars)}</span>
         </div>
-        <p class="card-desc">${r.description || "Sem descrição."}</p>
+        <p class="card-desc">${r.description||"Sem descrição."}</p>
         <div class="card-footer">
           <span class="badge">${r.category}</span>
-          ${r.language ? `
-            <span class="lang-label">
-              <span class="lang-dot ${langClass(r.language)}"></span>
-              ${r.language}
-            </span>` : ""}
+          ${r.language?`<span class="lang-label"><span class="lang-dot ${langClass(r.language)}"></span>${r.language}</span>`:""}
         </div>
-      </div>
-    `).join("");
-
+      </div>`).join("");
     grid.querySelectorAll(".card").forEach(card => {
       const open = () => openModal(filtered()[+card.dataset.idx]);
       card.addEventListener("click", open);
-      card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") open(); });
+      card.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" ") open(); });
     });
   }
 
   function openModal(r) {
     document.getElementById("modal-name").textContent = r.name;
     document.getElementById("modal-category").textContent = r.category;
-    document.getElementById("modal-desc").textContent = r.description || "Sem descrição disponível.";
+    document.getElementById("modal-desc").textContent = r.description||"Sem descrição.";
     document.getElementById("modal-link").href = r.url;
-
-    const meta = document.getElementById("modal-meta");
-    meta.innerHTML = [
+    document.getElementById("modal-meta").innerHTML = [
       `<span class="badge">★ ${fmtStars(r.stars)} estrelas</span>`,
       r.language ? `<span class="badge">${r.language}</span>` : "",
       `<span class="badge">${r.category}</span>`,
     ].join("");
-
     const tip = document.getElementById("modal-tip");
-    const tipText = TIPS[r.category] || "";
-    tip.innerHTML = tipText
-      ? `<h4>💡 Dica de uso</h4><p>${tipText}</p>`
-      : "";
+    const tipText = TIPS[r.category]||"";
     tip.style.display = tipText ? "" : "none";
-
+    if (tipText) tip.innerHTML = `<h4>💡 Dica de combinação</h4><p>${tipText}</p>`;
+    const startEl = document.getElementById("modal-start");
+    const startText = r.comocomecar || r.comoczecar || "";
+    startEl.style.display = startText ? "" : "none";
+    if (startText) {
+      const html = startText.replace(/`([^`]+)`/g, "<code>$1</code>");
+      startEl.innerHTML = `<h4>🚀 Como começar</h4><p>${html}</p>`;
+    }
     document.getElementById("modal-overlay").classList.add("open");
     document.body.style.overflow = "hidden";
   }
@@ -543,16 +349,189 @@
   }
 
   document.getElementById("modal-close").addEventListener("click", closeModal);
-  document.getElementById("modal-overlay").addEventListener("click", e => {
-    if (e.target === e.currentTarget) closeModal();
-  });
-  document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+  document.getElementById("modal-overlay").addEventListener("click", e => { if (e.target===e.currentTarget) closeModal(); });
+  document.addEventListener("keydown", e => { if (e.key==="Escape") { closeModal(); closePanel(); } });
+  document.getElementById("search").addEventListener("input", e => { query = e.target.value; renderGrid(); });
 
-  document.getElementById("search").addEventListener("input", e => {
-    query = e.target.value;
-    renderGrid();
+  /* ─────────────────────────────────────────
+     AI CHAT
+  ───────────────────────────────────────── */
+  const LS_KEY = "cauedj_openrouter_key";
+  let chatHistory = [];
+  let isThinking = false;
+
+  function getKey() { return localStorage.getItem(LS_KEY) || ""; }
+  function setKey(k) { localStorage.setItem(LS_KEY, k); }
+
+  function openPanel() {
+    const key = getKey();
+    if (!key) { openKeyModal(); return; }
+    document.getElementById("ai-panel").classList.add("open");
+    if (chatHistory.length === 0) addWelcome();
+    document.getElementById("ai-input").focus();
+  }
+
+  function closePanel() { document.getElementById("ai-panel").classList.remove("open"); }
+
+  function addWelcome() {
+    appendMsg("assistant",
+      "Olá! Sou o assistente do Cauê DJ Toolkit 🎧\n\nPosso te ajudar a:\n• Encontrar a ferramenta certa para o seu caso\n• Sugerir combinações de ferramentas\n• Explicar como começar com qualquer projeto\n\nO que você precisa?"
+    );
+  }
+
+  function appendMsg(role, text) {
+    const wrap = document.getElementById("ai-messages");
+    const div = document.createElement("div");
+    div.className = `ai-msg ${role}`;
+    div.innerHTML = text
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+      .replace(/`([^`\n]+)`/g,"<code>$1</code>")
+      .replace(/\n/g,"<br>");
+    wrap.appendChild(div);
+    wrap.scrollTop = wrap.scrollHeight;
+    return div;
+  }
+
+  function buildSystemPrompt() {
+    const toolList = repos.slice(0, 60).map(r => `- ${r.name} (${r.category}, ★${r.stars})`).join("\n");
+    return `Você é o assistente do Cauê DJ Toolkit, especializado em ferramentas open source para DJs e produtores musicais.
+
+Ferramentas disponíveis na base (amostra):
+${toolList}
+
+Regras:
+- Responda SEMPRE em português do Brasil
+- Seja conciso e prático — máximo 4 parágrafos por resposta
+- Use bullet points quando listar ferramentas
+- Sugira combinações quando fizer sentido
+- Se não souber algo, diga honestamente
+- Não invente URLs ou nomes de repos que não existam na lista acima`;
+  }
+
+  async function sendMessage(text) {
+    if (isThinking || !text.trim()) return;
+    isThinking = true;
+
+    const key = getKey();
+    if (!key) { openKeyModal(); isThinking = false; return; }
+
+    appendMsg("user", text);
+    chatHistory.push({ role: "user", content: text });
+
+    const loadingDiv = document.createElement("div");
+    loadingDiv.className = "ai-msg loading";
+    loadingDiv.textContent = "pensando…";
+    document.getElementById("ai-messages").appendChild(loadingDiv);
+    document.getElementById("ai-messages").scrollTop = 999999;
+    document.getElementById("ai-send").disabled = true;
+
+    try {
+      const resp = await fetch(OPENROUTER_CONFIG.endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${key}`,
+          "HTTP-Referer": location.origin,
+          "X-Title": "Cauê DJ Toolkit",
+        },
+        body: JSON.stringify({
+          model: OPENROUTER_CONFIG.model,
+          messages: [
+            { role: "system", content: buildSystemPrompt() },
+            ...chatHistory,
+          ],
+          max_tokens: 600,
+          temperature: 0.7,
+        }),
+      });
+
+      loadingDiv.remove();
+
+      if (!resp.ok) {
+        const err = await resp.json().catch(() => ({}));
+        if (resp.status === 401) {
+          appendMsg("assistant", "❌ Chave inválida ou expirada. Clique em 🔑 para atualizar.");
+          localStorage.removeItem(LS_KEY);
+        } else {
+          appendMsg("assistant", `❌ Erro ${resp.status}: ${err.error?.message || "tente novamente."}`);
+        }
+        isThinking = false;
+        document.getElementById("ai-send").disabled = false;
+        return;
+      }
+
+      const data = await resp.json();
+      const reply = data.choices?.[0]?.message?.content || "Não consegui uma resposta. Tente novamente.";
+      chatHistory.push({ role: "assistant", content: reply });
+      appendMsg("assistant", reply);
+    } catch (e) {
+      loadingDiv.remove();
+      appendMsg("assistant", "❌ Erro de conexão. Verifique sua internet e tente novamente.");
+    }
+
+    isThinking = false;
+    document.getElementById("ai-send").disabled = false;
+  }
+
+  // Panel events
+  document.getElementById("ai-btn").addEventListener("click", openPanel);
+  document.getElementById("ai-close-btn").addEventListener("click", closePanel);
+  document.getElementById("ai-clear-btn").addEventListener("click", () => {
+    chatHistory = [];
+    document.getElementById("ai-messages").innerHTML = "";
+    addWelcome();
+  });
+  document.getElementById("ai-key-btn").addEventListener("click", openKeyModal);
+  document.getElementById("ai-send").addEventListener("click", () => {
+    const inp = document.getElementById("ai-input");
+    sendMessage(inp.value);
+    inp.value = "";
+    inp.style.height = "";
+  });
+  document.getElementById("ai-input").addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      const inp = e.target;
+      sendMessage(inp.value);
+      inp.value = "";
+      inp.style.height = "";
+    }
+  });
+  document.getElementById("ai-input").addEventListener("input", function() {
+    this.style.height = "";
+    this.style.height = Math.min(this.scrollHeight, 100) + "px";
   });
 
+  /* ── API Key modal ── */
+  function openKeyModal() {
+    const el = document.getElementById("key-overlay");
+    el.classList.add("open");
+    document.getElementById("key-input").value = getKey();
+    document.getElementById("key-error").style.display = "none";
+    setTimeout(() => document.getElementById("key-input").focus(), 100);
+  }
+  function closeKeyModal() { document.getElementById("key-overlay").classList.remove("open"); }
+
+  document.getElementById("key-cancel").addEventListener("click", closeKeyModal);
+  document.getElementById("key-overlay").addEventListener("click", e => { if (e.target===e.currentTarget) closeKeyModal(); });
+  document.getElementById("key-save").addEventListener("click", async () => {
+    const k = document.getElementById("key-input").value.trim();
+    if (!k.startsWith("sk-")) {
+      document.getElementById("key-error").style.display = "";
+      return;
+    }
+    setKey(k);
+    closeKeyModal();
+    document.getElementById("ai-panel").classList.add("open");
+    if (chatHistory.length === 0) addWelcome();
+  });
+  document.getElementById("key-input").addEventListener("keydown", e => {
+    if (e.key === "Enter") document.getElementById("key-save").click();
+  });
+
+  /* ─────────────────────────────────────────
+     BOOT
+  ───────────────────────────────────────── */
   fetch("data/repos.json")
     .then(r => r.json())
     .then(data => {
