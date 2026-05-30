@@ -544,5 +544,163 @@ Regras:
         `<div class="empty"><span>⚠️</span>Erro ao carregar repositórios.</div>`;
     });
 </script>
+
+<script>
+  /**
+   * Cauê DJ Toolkit - Dynamic Animations & Generative Art Script
+   * Este script implementa um fundo generativo inspirado em frequências de áudio
+   * e micro-interações fluidas para os cards usando GSAP.
+   */
+
+  // 1. Configuração do Fundo Generativo (Canvas)
+  const initGenerativeBackground = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      document.body.prepend(canvas);
+
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.zIndex = '-1';
+      canvas.style.opacity = '0.4';
+      canvas.style.pointerEvents = 'none';
+
+      let width, height, particles = [];
+
+      const resize = () => {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+      };
+
+      class Particle {
+          constructor() {
+              this.x = Math.random() * width;
+              this.y = Math.random() * height;
+              this.vx = (Math.random() - 0.5) * 0.5;
+              this.vy = (Math.random() - 0.5) * 0.5;
+              this.radius = Math.random() * 2;
+              this.color = Math.random() > 0.5 ? '#7c5cfc' : '#c084fc';
+          }
+
+          update() {
+              this.x += this.vx;
+              this.y += this.vy;
+
+              if (this.x < 0 || this.x > width) this.vx *= -1;
+              if (this.y < 0 || this.y > height) this.vy *= -1;
+          }
+
+          draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+              ctx.fillStyle = this.color;
+              ctx.fill();
+          }
+      }
+
+      const init = () => {
+          resize();
+          particles = Array.from({ length: 80 }, () => new Particle());
+      };
+
+      const animate = () => {
+          ctx.clearRect(0, 0, width, height);
+          
+          // Desenha conexões estilo "constelação/frequência"
+          particles.forEach((p1, i) => {
+              p1.update();
+              p1.draw();
+              
+              for (let j = i + 1; j < particles.length; j++) {
+                  const p2 = particles[j];
+                  const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                  if (dist < 150) {
+                      ctx.beginPath();
+                      ctx.moveTo(p1.x, p1.y);
+                      ctx.lineTo(p2.x, p2.y);
+                      ctx.strokeStyle = `rgba(124, 92, 252, ${1 - dist / 150})`;
+                      ctx.lineWidth = 0.5;
+                      ctx.stroke();
+                  }
+              }
+          });
+          requestAnimationFrame(animate);
+      };
+
+      window.addEventListener('resize', resize);
+      init();
+      animate();
+  };
+
+  // 2. Micro-interações com GSAP
+  const initCardAnimations = () => {
+      // Observa mudanças na grade para aplicar animações aos novos cards
+      const grid = document.getElementById('grid');
+      if (!grid) return;
+
+      const observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+              if (mutation.addedNodes.length) {
+                  mutation.addedNodes.forEach((node) => {
+                      if (node.classList && node.classList.contains('card')) {
+                          applyCardInteractions(node);
+                          // Animação de entrada (fade-in + slide-up)
+                          gsap.from(node, {
+                              opacity: 0,
+                              y: 20,
+                              duration: 0.4,
+                              ease: "power2.out"
+                          });
+                      }
+                  });
+              }
+          });
+      });
+
+      observer.observe(grid, { childList: true });
+
+      const applyCardInteractions = (card) => {
+          card.addEventListener('mouseenter', () => {
+              gsap.to(card, {
+                  scale: 1.03,
+                  borderColor: '#7c5cfc',
+                  boxShadow: '0 12px 30px rgba(124, 92, 252, 0.2)',
+                  duration: 0.3,
+                  ease: "power2.out"
+              });
+          });
+
+          card.addEventListener('mouseleave', () => {
+              gsap.to(card, {
+                  scale: 1,
+                  borderColor: '#2a2a38',
+                  boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+                  duration: 0.3,
+                  ease: "power2.inOut"
+              });
+          });
+      };
+  };
+
+  // 3. Inicialização ao carregar o DOM
+  document.addEventListener('DOMContentLoaded', () => {
+      // Carrega GSAP via CDN dinamicamente se não estiver presente
+      if (typeof gsap === 'undefined') {
+          const script = document.createElement('script');
+          script.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
+          script.onload = () => {
+              initGenerativeBackground();
+              initCardAnimations();
+          };
+          document.head.appendChild(script);
+      } else {
+          initGenerativeBackground();
+          initCardAnimations();
+      }
+  });
+</script>
+
 </body>
 </html>
